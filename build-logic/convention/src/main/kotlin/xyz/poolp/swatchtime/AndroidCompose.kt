@@ -3,7 +3,6 @@ package xyz.poolp.swatchtime
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import xyz.poolp.relaxing.libs
 
 internal fun Project.configureAndroidCompose (
     commonExtension: CommonExtension<*, *, *, *, *, *>,
@@ -15,7 +14,7 @@ internal fun Project.configureAndroidCompose (
         }
 
         composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("kotlinCompilerExtension").get().toString()
+            kotlinCompilerExtensionVersion = "1.5.12"
         }
     }
 

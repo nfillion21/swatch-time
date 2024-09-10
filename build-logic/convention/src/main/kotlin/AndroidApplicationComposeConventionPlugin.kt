@@ -7,7 +7,10 @@ import xyz.poolp.swatchtime.configureAndroidCompose
 class AndroidApplicationComposeConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
-            project.pluginManager.apply("com.android.application")
+            with(project.pluginManager) {
+                apply("com.android.application")
+                apply("org.jetbrains.kotlin.plugin.compose")
+            }
 
             extensions.configure<ApplicationExtension> {
                 configureAndroidCompose(this)

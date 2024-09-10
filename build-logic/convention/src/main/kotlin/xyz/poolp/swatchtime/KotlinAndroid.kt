@@ -18,8 +18,8 @@ internal fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_19
+            targetCompatibility = JavaVersion.VERSION_19
         }
 
         configureKotlin()
@@ -29,7 +29,7 @@ internal fun Project.configureKotlinAndroid(
 private fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = JavaVersion.VERSION_19.toString()
         }
     }
 }

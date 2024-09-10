@@ -1,4 +1,4 @@
-package xyz.poolp.relaxing
+package xyz.poolp.swatchtime
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
