@@ -22,4 +22,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Swatch Time"
 include(":app")
- 
+include(":core:domain")
+include(":core:common")
+include(":core:data")
