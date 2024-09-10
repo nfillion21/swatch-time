@@ -2,7 +2,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import xyz.poolp.relaxing.configureKotlinAndroid
+import xyz.poolp.swatchtime.configureKotlinAndroid
 
 class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
@@ -10,6 +10,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
             with(project.pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply("org.jetbrains.kotlin.plugin.compose")
             }
 
             extensions.configure<ApplicationExtension> {
@@ -22,7 +23,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
 private fun ApplicationExtension.configureDefaultConfig() {
     defaultConfig {
-        applicationId = "xyz.poolp.relaxing"
+        applicationId = "xyz.poolp.swatchtime"
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

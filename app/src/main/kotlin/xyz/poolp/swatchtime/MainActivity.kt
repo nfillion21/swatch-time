@@ -1,4 +1,4 @@
-package com.example.swatchtime
+package xyz.poolp.swatchtime
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
