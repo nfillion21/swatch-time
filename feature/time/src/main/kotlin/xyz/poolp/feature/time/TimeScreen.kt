@@ -13,17 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.koin.androidx.compose.koinViewModel
 import xyz.poolp.core.common.date.TimeExtensions
 
 @Composable
-fun TimeScreen() {
+fun TimeScreen(
+    timeViewModel: TimeViewModel = koinViewModel()
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) { innerPadding ->
-        Greeting(
-            name = TimeExtensions.currentSwatchTime(),
+        TimeContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -32,7 +34,10 @@ fun TimeScreen() {
 }
 
 @Composable
-private fun Greeting(name: String, modifier: Modifier = Modifier) {
+private fun TimeContent(
+    modifier: Modifier = Modifier
+
+) {
     Box(
         modifier = modifier
     ) {
@@ -54,7 +59,7 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = "@$name",
+                text = TimeExtensions.currentSwatchTime(),
                 style = MaterialTheme.typography.headlineLarge
             )
         }
