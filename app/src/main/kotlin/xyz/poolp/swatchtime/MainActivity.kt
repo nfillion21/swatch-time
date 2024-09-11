@@ -4,16 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import com.example.swatchtime.ui.theme.SwatchTimeTheme
 import xyz.poolp.core.common.date.TimeExtensions
 
@@ -26,7 +29,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = TimeExtensions.currentSwatchTime(),
-                        modifier = Modifier.padding(innerPadding).fillMaxSize()
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .fillMaxSize()
                     )
                 }
             }
@@ -40,10 +45,27 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         Text(
-            text = "@$name",
-            fontSize = 32.sp,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 32.dp),
+            text = "Swatch Time",
+            style = MaterialTheme.typography.bodyLarge
         )
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = TimeExtensions.currentSwatchDate(),
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "@$name",
+                style = MaterialTheme.typography.headlineLarge
+            )
+        }
     }
 }
 
@@ -51,6 +73,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     SwatchTimeTheme {
-        Greeting("572")
+        Greeting("572.43")
     }
 }
