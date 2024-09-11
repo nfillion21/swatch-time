@@ -13,10 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.swatchtime.ui.theme.SwatchTimeTheme
-import xyz.poolp.core.common.date.DateExtensions
+import xyz.poolp.core.common.date.TimeExtensions
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +25,7 @@ class MainActivity : ComponentActivity() {
             SwatchTimeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = DateExtensions.currentSwatchTime().toString(),
+                        name = TimeExtensions.currentSwatchTime(),
                         modifier = Modifier.padding(innerPadding).fillMaxSize()
                     )
                 }
