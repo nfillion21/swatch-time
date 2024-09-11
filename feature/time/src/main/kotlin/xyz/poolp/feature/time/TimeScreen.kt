@@ -10,9 +10,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDateTime
 import org.koin.androidx.compose.koinViewModel
 import xyz.poolp.core.common.date.TimeExtensions
 
@@ -25,7 +28,9 @@ fun TimeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) { innerPadding ->
+        val tickInterval by timeViewModel.tickFlow.collectAsState(TimeExtensions.swatchDateNow())
         TimeContent(
+            currentTime = tickInterval,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -35,8 +40,8 @@ fun TimeScreen(
 
 @Composable
 private fun TimeContent(
+    currentTime: LocalDateTime,
     modifier: Modifier = Modifier
-
 ) {
     Box(
         modifier = modifier
@@ -55,11 +60,11 @@ private fun TimeContent(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = TimeExtensions.currentSwatchDate(),
+                text = TimeExtensions.swatchDate(currentTime),
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = TimeExtensions.currentSwatchTime(),
+                text = "@${TimeExtensions.swatchTime(currentTime)}",
                 style = MaterialTheme.typography.headlineLarge
             )
         }

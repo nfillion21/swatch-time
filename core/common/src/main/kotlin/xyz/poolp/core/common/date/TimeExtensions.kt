@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import android.icu.text.NumberFormat
 import kotlinx.datetime.Clock
 import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.toLocalDateTime
 
@@ -15,16 +16,16 @@ object TimeExtensions {
     // swatch time is fixed UTC+01:00
     private val swatchZone: FixedOffsetTimeZone = FixedOffsetTimeZone(UtcOffset(hours = 1))
 
-    fun currentSwatchTime(): String = run {
-        swatchDateNow().time.toSecondOfDay().div(BEAT_TO_SECONDS).round()
+    fun swatchTime(localDateTime: LocalDateTime): String = run {
+        localDateTime.time.toSecondOfDay().div(BEAT_TO_SECONDS).round()
     }
 
-    fun currentSwatchDate(): String = with(swatchDateNow()) {
+    fun swatchDate(localDateTime: LocalDateTime): String = with(localDateTime) {
         val f: NumberFormat = DecimalFormat("00")
         "d${f.format(date.dayOfMonth)}.${f.format(date.monthNumber)}.${year}"
     }
 
-    private fun swatchDateNow() = Clock.System.now().toLocalDateTime(swatchZone)
+    fun swatchDateNow() = Clock.System.now().toLocalDateTime(swatchZone)
 
     private fun Float.round(decimals: Int = 2): String = "%.${decimals}f".format(this)
 }

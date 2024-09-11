@@ -10,4 +10,5 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(libs.insert.koin)
+    implementation(libs.kotlinx.dateTime)
 }
