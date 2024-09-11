@@ -1,9 +1,13 @@
 package xyz.poolp.swatchtime
 
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.swatchtime.ui.theme.SwatchTimeTheme
 import xyz.poolp.core.common.date.TimeExtensions
+import xyz.poolp.swatchtime.ui.theme.SwatchTimeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +34,17 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SwatchTimeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Surface {
-                        Greeting(
-                            name = TimeExtensions.currentSwatchTime(),
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .fillMaxSize()
-                        )
-                    }
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) { innerPadding ->
+                    Greeting(
+                        name = TimeExtensions.currentSwatchTime(),
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .fillMaxSize()
+                    )
                 }
             }
         }
@@ -75,10 +81,22 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun GreetingPreview() {
     SwatchTimeTheme {
-        Greeting("572.43")
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ) { innerPadding ->
+            Greeting(
+                name = TimeExtensions.currentSwatchTime(),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            )
+        }
     }
 }
