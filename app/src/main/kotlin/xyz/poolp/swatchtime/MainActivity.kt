@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.swatchtime.ui.theme.SwatchTimeTheme
@@ -24,15 +26,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.isNavigationBarContrastEnforced = false
+
         setContent {
             SwatchTimeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = TimeExtensions.currentSwatchTime(),
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize()
-                    )
+                    Surface {
+                        Greeting(
+                            name = TimeExtensions.currentSwatchTime(),
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize()
+                        )
+                    }
                 }
             }
         }
@@ -48,7 +54,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 32.dp),
-            text = "Swatch Time",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.bodyLarge
         )
         Column(

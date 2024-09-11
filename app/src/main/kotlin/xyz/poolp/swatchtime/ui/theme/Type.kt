@@ -9,9 +9,7 @@ import androidx.compose.ui.unit.sp
 import xyz.poolp.swatchtime.R
 
 private val fonts = FontFamily(
-    Font(R.font.rubik_regular),
-    Font(R.font.rubik_medium, FontWeight.W500),
-    Font(R.font.rubik_bold, FontWeight.Bold)
+    Font(R.font.rubik_regular)
 )
 
 // Set of Material typography styles to start with
