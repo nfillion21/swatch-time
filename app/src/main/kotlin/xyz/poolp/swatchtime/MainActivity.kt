@@ -53,7 +53,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         Text(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 32.dp),
+                .padding(top = 64.dp),
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.bodyLarge
         )
