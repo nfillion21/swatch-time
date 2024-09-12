@@ -24,8 +24,8 @@ private fun ApplicationExtension.configureDefaultConfig() {
     defaultConfig {
         applicationId = "xyz.poolp.swatchtime"
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.2"
 
         vectorDrawables {
             useSupportLibrary = true
