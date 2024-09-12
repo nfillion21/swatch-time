@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -27,7 +31,14 @@ fun TimeScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { },
+                icon = { Icon(Icons.Filled.Share, "Share floating action button.") },
+                text = { Text(text = "Share time") },
+            )
+        }
     ) { innerPadding ->
         val timeState by timeViewModel.timeUiState.collectAsState(TimeViewModel.TimeUiState())
         TimeContent(
@@ -88,7 +99,14 @@ fun TimeContentPreview() {
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.background),
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    onClick = { },
+                    icon = { Icon(Icons.Filled.Share, "Share floating action button.") },
+                    text = { Text(text = "Share time") },
+                )
+            }
         ) { innerPadding ->
             TimeContent(
                 timeState = TimeViewModel.TimeUiState(
