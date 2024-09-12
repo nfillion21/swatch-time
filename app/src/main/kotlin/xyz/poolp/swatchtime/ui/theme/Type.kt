@@ -18,8 +18,12 @@ val Typography = Typography(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 28.sp,
         letterSpacing = 1.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
     ),
     headlineLarge = TextStyle(
         fontFamily = fonts,

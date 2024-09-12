@@ -6,25 +6,34 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 import xyz.poolp.core.common.date.TimeExtensions
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 class TimeViewModel : ViewModel() {
-    private val _tickFlow = MutableStateFlow(TimeExtensions.swatchDateNow())
-    val tickFlow: StateFlow<LocalDateTime> = _tickFlow.asStateFlow()
+    private val _timeUiState = MutableStateFlow(TimeUiState())
+    val timeUiState: StateFlow<TimeUiState> = _timeUiState.asStateFlow()
 
-    // 1 beat = 1.26 s = 1260 ms
-    private val tickInterval: Duration = 1260.milliseconds
+    private val tickInterval: Duration = 512.milliseconds
 
     init {
         viewModelScope.launch {
             while (true) {
-                _tickFlow.emit(TimeExtensions.swatchDateNow())
+                _timeUiState.update {
+                    it.copy(
+                        swatchDate = TimeExtensions.swatchDate(),
+                        swatchTime = "@${TimeExtensions.swatchTime()}"
+                    )
+                }
                 delay(tickInterval)
             }
         }
     }
+
+    data class TimeUiState(
+        val swatchDate: String = "",
+        val swatchTime: String = ""
+    )
 }
