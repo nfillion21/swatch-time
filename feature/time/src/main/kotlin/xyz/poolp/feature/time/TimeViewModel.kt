@@ -24,7 +24,9 @@ class TimeViewModel : ViewModel() {
                 _timeUiState.update {
                     it.copy(
                         swatchDate = TimeExtensions.swatchDate(),
-                        swatchTime = TimeExtensions.swatchTime()
+                        swatchTime = TimeExtensions.swatchTime(),
+                        localDate = TimeExtensions.localDate(),
+                        localTime = TimeExtensions.localTime(),
                     )
                 }
                 delay(tickInterval)
@@ -36,6 +38,8 @@ class TimeViewModel : ViewModel() {
 
     data class TimeUiState(
         val swatchDate: String = "",
-        val swatchTime: String = ""
+        val swatchTime: String = "",
+        val localDate: String = "",
+        val localTime: String = ""
     )
 }
