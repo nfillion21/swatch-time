@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SwatchTime" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.SwatchTime" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowSplashScreenBackground">?android:attr/colorBackground</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:colorBackground">@color/background_color</item>
+    </style>
 </resources>

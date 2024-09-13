@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -21,4 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Swatch Time"
 include(":app")
- 
+include(":core:domain")
+include(":core:common")
+include(":core:data")
+include(":feature:time")
