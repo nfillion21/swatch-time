@@ -18,7 +18,12 @@ object TimeExtensions {
     // swatch time is fixed UTC+01:00
     private val swatchZone: FixedOffsetTimeZone = FixedOffsetTimeZone(UtcOffset(hours = 1))
 
-    fun sharedTime(): String = swatchDateNow().run { "${swatchDate(this)}${swatchTime(this)}" }
+    fun sharedTime(): String = swatchDateNow().run {
+        "Swatch Time (Internet Time)\n" +
+                "${swatchDate(this)}${swatchTime(this)}\n\n" +
+                "Local Time (${TimeZone.currentSystemDefault()})\n" +
+        "${localDate(this)} ${localTime(this)}"
+    }
 
     fun localTime(localDateTime: LocalDateTime = localDateNow()): String = run {
         val f: NumberFormat = DecimalFormat("00")

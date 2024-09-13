@@ -1,19 +1,18 @@
 package xyz.poolp.feature.time
 
 import android.content.res.Configuration
-import android.widget.ImageButton
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,10 +25,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -37,30 +38,44 @@ fun TimeScreen(
     onSharePressed: (String) -> Unit,
     timeViewModel: TimeViewModel = koinViewModel()
 ) {
+    val timeState by timeViewModel.timeUiState.collectAsState(TimeViewModel.TimeUiState())
+    TimeContent(
+        timeState = timeState,
+        onSharePressed = { onSharePressed(timeViewModel.sharedTime()) }
+    )
+}
+
+@Composable
+private fun TimeContent(
+    timeState: TimeViewModel.TimeUiState,
+    onSharePressed: () -> Unit,
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { onSharePressed(timeViewModel.sharedTime()) },
+                //onClick = { onSharePressed(timeViewModel.sharedTime()) },
+                onClick = onSharePressed,
                 icon = { Icon(Icons.Filled.Share, "Share floating action button.") },
                 text = { Text(text = "Share time") },
             )
         }
     ) { innerPadding ->
-        val timeState by timeViewModel.timeUiState.collectAsState(TimeViewModel.TimeUiState())
         val pagerState = rememberPagerState(initialPage = 0) { 2 }
         val scope = rememberCoroutineScope()
 
         HorizontalPager(
-            modifier = Modifier.padding(innerPadding),
             state = pagerState,
             pageSpacing = 10.dp
         ) { currentPage ->
-            TimeContent(
-                timeType = if (currentPage == 0) TimeType.SWATCH else TimeType.LOCAL,
-                timeState = timeState,
+
+            val timeType = if (currentPage == 0) TimeType.SWATCH else TimeType.LOCAL
+            TimePage(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
                 onSwitchPressed = { to ->
                     val page = when (to) {
                         SwitchOrientation.RIGHT -> 1
@@ -70,28 +85,25 @@ fun TimeScreen(
                         pagerState.animateScrollToPage(page)
                     }
                 },
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
+                timeType = timeType,
+                timeState = timeState,
             )
         }
     }
 }
 
 @Composable
-private fun TimeContent(
+private fun TimePage(
+    onSwitchPressed: (SwitchOrientation) -> Unit,
     timeType: TimeType,
     timeState: TimeViewModel.TimeUiState,
-    onSwitchPressed: (SwitchOrientation) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
-    Box(
-        modifier = modifier
+    Column(
+        modifier = modifier.padding(top = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
@@ -100,13 +112,17 @@ private fun TimeContent(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = "by poolp",
+                text = if (timeType == TimeType.SWATCH) "Internet Time" else TimeZone.currentSystemDefault()
+                    .toString(),
                 style = MaterialTheme.typography.bodySmall
             )
         }
-        Column(
+
+        Spacer(
             modifier = Modifier
-                .align(Alignment.Center),
+                .weight(1.0f)
+        )
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -119,13 +135,18 @@ private fun TimeContent(
                 style = MaterialTheme.typography.headlineLarge
             )
 
-            IconButton(onClick = { onSwitchPressed.invoke(switchOrientation(timeType)) }) {
+            IconButton(onClick = { onSwitchPressed(switchOrientation(timeType)) }) {
                 Icon(
                     painter = painterResource(if (timeType == TimeType.SWATCH) R.drawable.switch_right_24px else R.drawable.switch_left_24px),
                     contentDescription = null
                 )
             }
         }
+
+        Spacer(
+            modifier = Modifier
+                .weight(1.0f)
+        )
     }
 }
 
@@ -139,7 +160,7 @@ private enum class TimeType {
     SWATCH, LOCAL
 }
 
-private enum class SwitchOrientation {
+enum class SwitchOrientation {
     RIGHT, LEFT
 }
 
@@ -147,29 +168,12 @@ private enum class SwitchOrientation {
 @Composable
 fun TimeContentPreview() {
     MaterialTheme {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    onClick = { },
-                    icon = { Icon(Icons.Filled.Share, "Share floating action button.") },
-                    text = { Text(text = "Share time") },
-                )
-            }
-        ) { innerPadding ->
-            TimeContent(
-                timeType = TimeType.SWATCH,
-                timeState = TimeViewModel.TimeUiState(
-                    swatchDate = "d12.09.2024",
-                    swatchTime = "@441.13"
-                ),
-                onSwitchPressed = {},
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            )
-        }
+        TimeContent(
+            timeState = TimeViewModel.TimeUiState(
+                swatchDate = "d12.09.2024",
+                swatchTime = "@441.13"
+            ),
+            onSharePressed = {},
+        )
     }
 }
