@@ -24,13 +24,15 @@ class TimeViewModel : ViewModel() {
                 _timeUiState.update {
                     it.copy(
                         swatchDate = TimeExtensions.swatchDate(),
-                        swatchTime = "@${TimeExtensions.swatchTime()}"
+                        swatchTime = TimeExtensions.swatchTime()
                     )
                 }
                 delay(tickInterval)
             }
         }
     }
+
+    fun sharedTime() = TimeExtensions.sharedTime()
 
     data class TimeUiState(
         val swatchDate: String = "",

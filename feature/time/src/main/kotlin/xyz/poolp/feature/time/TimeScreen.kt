@@ -13,7 +13,6 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TimeScreen(
+    onSharePressed: (String) -> Unit,
     timeViewModel: TimeViewModel = koinViewModel()
 ) {
     Scaffold(
@@ -34,7 +34,7 @@ fun TimeScreen(
             .background(MaterialTheme.colorScheme.background),
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { },
+                onClick = { onSharePressed(timeViewModel.sharedTime()) },
                 icon = { Icon(Icons.Filled.Share, "Share floating action button.") },
                 text = { Text(text = "Share time") },
             )
