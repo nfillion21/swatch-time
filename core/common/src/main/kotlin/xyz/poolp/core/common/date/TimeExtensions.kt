@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import android.icu.text.NumberFormat
 import kotlinx.datetime.Clock
 import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
@@ -18,12 +19,13 @@ object TimeExtensions {
     // swatch time is fixed UTC+01:00
     private val swatchZone: FixedOffsetTimeZone = FixedOffsetTimeZone(UtcOffset(hours = 1))
 
-    fun sharedTime(): String = swatchDateNow().run {
-        "Swatch Time (Internet Time)\n" +
-                "${swatchDate(this)}${swatchTime(this)}\n\n" +
-                "Local Time (${TimeZone.currentSystemDefault()})\n" +
-        "${localDate(this)} ${localTime(this)}"
-    }
+    fun sharedTime(): String =
+        Clock.System.now().let {
+            "Swatch Time (Internet Time)\n"
+                .plus(with(swatchDateNow(it)) { "${swatchDate(this)}${swatchTime(this)}\n\n" })
+                .plus("Local Time (${TimeZone.currentSystemDefault()})\n")
+                .plus(with(localDateNow(it)) { "${localDate(this)} ${localTime(this)}" })
+        }
 
     fun localTime(localDateTime: LocalDateTime = localDateNow()): String = run {
         val f: NumberFormat = DecimalFormat("00")
@@ -42,8 +44,11 @@ object TimeExtensions {
         "d${f.format(date.dayOfMonth)}.${f.format(date.monthNumber)}.${year}"
     }
 
-    private fun swatchDateNow() = Clock.System.now().toLocalDateTime(swatchZone)
-    private fun localDateNow() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    private fun swatchDateNow(now: Instant = Clock.System.now()) =
+        now.toLocalDateTime(swatchZone)
+
+    private fun localDateNow(now: Instant = Clock.System.now()) =
+        now.toLocalDateTime(TimeZone.currentSystemDefault())
 
     private fun Float.round(digits: Int = 6, decimals: Int = 2): String =
         "%0${digits}.${decimals}f".format(this)
